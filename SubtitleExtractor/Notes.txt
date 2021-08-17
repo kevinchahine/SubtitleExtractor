@@ -1,0 +1,45 @@
+# 1.) === Shows subtitle (and other) tracks in file ===
+mkvinfo <MyVideo.mkv>
+mkvmerge -i <MyVideo.mkv>
+	# !!! AUTOMATION !!!
+	# Default format is not intended to be parsed. To print output in a parsable json format use --identification-format json along with the --identify option
+	# ex: mkvmerge --identify --identification-format json my_video.mkv
+	
+	# --list-languages will give a list of languages and their ISO 639 code which can be used with the --language option. 
+# *** Notice what numbers are printed for each track ***
+
+# 2.) === Extract each subtitle track ===
+mkvextract <MyVideo.mkv> tracks <Number>:<outname.extention>
+
+# ex:
+#  mkvextract The\ Phantom\ Menace.mkv tracks 11:11_eng.sup
+# *** .sup is for PGS subtitles found in bluray discs ***
+
+# *** Now each subtitle track is stored in its own (.sup) file ***
+
+# 3.) === Convert PGS (.sup) subtitles into VOB (.sub) subtitles ===
+# ** Only works one file at a time **
+java -jar BDSup2Sub.jar --language <lang> -o <output> <input>
+
+# ex:
+#	java -jar BDSup2Sub.jar --language en -o 11_eng.sub 11_eng.sup
+
+# *** This will create two files: .sub and .idx ***
+# !!! But neither of these can be imported into HandBrake !!!
+
+# 4.) === Merge these back into the original .mkv file ===
+# *** Merges all files into one called <output.mkv> ***
+# !!! This did not work !!!
+# mkvmerge -o <output.mkv> <input.mkv> <otherfile1> <otherfile2> ...
+
+# ex:
+#	mkvmerge -o The\ Phantom\ Menace_1.mkv The\ Phantom\ Menace.mkv 11_eng.sub 12_eng.sub 
+# 
+# ** This will merge the subtitle files into a new copy of the original movie **
+# This version did work:
+mkvmerge -o title_t02.new.mkv title_t02.mkv --language 0:eng 4_en.idx --language 0:eng 5_en.idx --language 0:spa 6_sp.idx
+
+# !!! Use --track-name TID:name to label tracks
+
+# *** Now mkv file has subtitles in DVDVOB (.sub) format and can be transcoded into mp4 files ***
+# *** <: Yay :> ***
