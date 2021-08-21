@@ -23,10 +23,10 @@ int main()
 {
 	fs::path srcPath(
 		//	R"dil(E:\Video\Revenge of the Sith\Revenge of the Sith_t01.mkv)dil"
-		R"dil(D:\Users\kchah\Videos\The Dark Knight\)dil"
+		R"dil(D:\Users\kchah\Videos\MKV\Dark Kniught\)dil"
 	);
 	fs::path dstPath(
-		R"dil(D:\Users\kchah\Videos\The Dark Knight\subtitles)dil"
+		R"dil(D:\Users\kchah\Videos\MKV\Dark Kniught\subtitles)dil"
 	);
 
 	if (!fs::exists(dstPath) && fs::is_directory(dstPath)) {
